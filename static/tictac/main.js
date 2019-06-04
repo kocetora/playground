@@ -2,7 +2,7 @@
 async function main() {
   const json = await fetch('./json');
   const data = await json.json();
-  const socket = new WebSocket(`ws://127.0.0.1:8000/${data.token}`);
+  const socket = new WebSocket(`ws://${config.domain}/${data.token}`);
   let sizeSet = false;
   socket.onopen = () => {
     const ee = new SocketEventEmitter(socket);
