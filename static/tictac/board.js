@@ -6,25 +6,31 @@ class TicTacToeBoard {
     this.size = size;
     this.field = [];
     for (let i = 0; i < size; i++) {
+      // TODO: fill empty array
       this.field.push(new Array().fill(''));
     }
     this.canvas = document.getElementById(id);
     this.ctx = this.canvas.getContext('2d');
   }
+
   initialize(width = window.innerWidth, height = window.innerHeight) {
+    // TODO: const { width, height } = this;
     this.width = width;
     this.height = height;
+    // TODO: use if
     this.width >= this.height ?
       (this.width = this.height) :
       (this.height = this.width);
     this.ctx.canvas.width = this.width * this.k;
     this.ctx.canvas.height = this.height * this.k;
     this.drawField();
+    // TODO: do not use that here
     const that = this;
     this.canvas.addEventListener('click', e => {
       let x,
           y = -1;
       for (let i = -1; i < that.size; i++) {
+        // TODO: functional decompose
         if (
           e.pageX > (that.width * (i + 1)) / (that.size + 2) &&
           e.pageX < (that.width * (i + 3)) / (that.size + 2)
@@ -36,7 +42,7 @@ class TicTacToeBoard {
         )
           y = i;
       }
-      if (x >= 0 && y >= 0) {
+      if (x + y) {
         console.log('x: ' + x + '; y: ' + y);
         that.listener(x, y);
       }
@@ -45,6 +51,7 @@ class TicTacToeBoard {
   drawField() {
     for (let i = 2; i <= this.size; i++) {
       this.ctx.beginPath();
+      // TODO: use variables for free
       this.ctx.moveTo(
         (this.width * this.k * i) / (this.size + 2),
         (this.height * this.k * 1) / (this.size + 2)
@@ -74,17 +81,15 @@ class TicTacToeBoard {
       this.ctx.closePath();
     }
   }
+
   draw({ x, y, marker }) {
-    if (marker === 'o') {
-      this.drawCircle(x, y);
-      this.field[y][x] = 'o';
-    } else {
-      this.drawCross(x, y);
-      this.field[y][x] = 'x';
-    }
+    this.drawCircle(x, y);
+    this.field[y][x] = marker;
   }
+
   drawCircle(x, y) {
     this.ctx.beginPath();
+    // TODO: use variables
     this.ctx.arc(
       (this.width * this.k * 1.5) / (this.size + 2) +
         (this.width * this.k * x) / (this.size + 2),
