@@ -8,10 +8,11 @@
 input { border: 1px solid green; }
 </style>
 <script>
-  async function main(){
+  async function main() {
   const links = document.getElementById('links');
   const chat = document.getElementById('chat');
   const tictac = document.getElementById('tictac');
+  // TODO: about same code twice, need refactor
   chat.addEventListener('click',async () => {
     const json = await fetch('./create/chat/');
     const data = await json.json();

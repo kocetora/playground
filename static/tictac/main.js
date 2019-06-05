@@ -1,8 +1,11 @@
 'use strict';
+
 async function main() {
-  const json = await fetch('./json');
-  const data = await json.json();
+  const result = await fetch('./json');
+  const data = await result.json();
   const socket = new WebSocket(`ws://${config.domain}/${data.token}`);
+
+  // TODO: need no flag because we can use once or unsubscribe
   let sizeSet = false;
   socket.onopen = () => {
     const ee = new SocketEventEmitter(socket);
@@ -25,4 +28,5 @@ async function main() {
     }
   };
 }
+
 main();

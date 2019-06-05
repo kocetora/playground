@@ -7,6 +7,7 @@ class Chat {
     const wH = window.innerHeight;
     let width;
     let height;
+    // TODO: use if instead
     wH < wW ?
       ((height = wH), (width = (wW - wH) * 0.9999)) :
       ((height = wH - wW), (width = wW));

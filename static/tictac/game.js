@@ -1,4 +1,5 @@
 'use strict';
+
 class TicTacToe {
   constructor(board) {
     this.nextURL = '';
@@ -7,8 +8,10 @@ class TicTacToe {
     this.board = board;
     this.history = [];
   }
+
   setEmitter(emitter) {
     this.emitter = emitter;
+    // TODO: we need no `that` in this case
     const that = this;
     emitter.on('move', data => {
       if (that.validate(data)) {
@@ -19,17 +22,19 @@ class TicTacToe {
         }
       }
     });
+
     emitter.once('setMarker', data => {
-      if (data.from === that.userId) {
-        that.marker = data.marker === 'x' ? 'x' : 'o';
-      } else {
-        that.marker = data.marker === 'x' ? 'o' : 'x';
-      }
+      const { from, marker } = data;
+      const pos = x => 'x' ? 'x' : 'o';
+      const neg = x => 'x' ? 'o' : 'x';
+      that.marker = (from === that.userId ? pos : neg)(marker);
       console.log(that.marker);
     });
+
     emitter.once('goto', data => {
       that.nextURL = data.href;
     });
+
     this.board.listener = (x, y) => {
       console.log(`x:${x} y:${y}`);
       const move = { from: that.userId, x, y, marker: that.marker };
@@ -38,15 +43,22 @@ class TicTacToe {
       }
     };
   }
+
   checkMarker() {
     const that = this;
     if (!this.marker) {
+      // TODO: try to use % 2
       const random = Math.floor(Math.random() * 2) ? 'x' : 'o';
       that.emitter.emit('setMarker', { from: this.userId, marker: random });
     }
   }
+
   validate(data) {
     const that = this;
+    // TODO: do not need if statement here
+    // - Decompose expression into multiple variables
+    // - return (x || y && z);
+    // - use const { length } = this.history;
     if (
       (that.history.length === 0 ||
         that.history[that.history.length - 1].from !== data.from) &&
@@ -59,6 +71,7 @@ class TicTacToe {
     const finish = document.getElementById('finish');
     finish.style.display = 'block';
     const winner = document.getElementById('winner');
+    // TODO: good place for ternary () ? 'won' : 'lost'
     if (this.marker === marker) {
       winner.innerHTML = 'You\'ve won';
     } else {
@@ -69,21 +82,22 @@ class TicTacToe {
       if (that.nextURL) {
         window.location.href = that.nextURL;
       } else {
-        const json = await fetch('../../create/tictac/');
-        const data = await json.json();
+        const result = await fetch('../../create/tictac/');
+        const data = await result.json();
         that.nextURL = `../../room/${data.token}/`;
         that.emitter.emit('goto', { href: that.nextURL });
         window.location.href = that.nextURL;
       }
     });
   }
+
   over(data) {
     const that = this;
     // up to down
     let count = 0;
     let x1, x2, y1, y2;
-    const x = data.x;
-    const y = data.y;
+    const { x, y } = data;
+    // TODO: refactor to if statements
     y <= 4 ? (y1 = 0) : (y1 = y - 5);
     y >= that.board.size - 1 - 5 ? (y2 = that.board.size - 1) : (y2 = y + 5);
     for (let j = y1; j <= y2; j++) {
@@ -92,11 +106,13 @@ class TicTacToe {
       } else {
         count = 0;
       }
+      // TODO: move magic numbers to constants
       if ((count === 5 && that.board.size > 4) || count === that.board.size) {
         return true;
       }
     }
-    //left to right
+    // left to right
+    // TODO: procedural decompose, extract function and call it 4 times
     count = 0;
     x <= 4 ? (x1 = 0) : (x1 = x - 5);
     x >= that.board.size - 1 - 5 ? (x2 = that.board.size - 1) : (x2 = x + 5);
