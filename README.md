@@ -98,6 +98,7 @@ main();
 ``` 
 ### 4. Chat in the game 
 ##### Path ./static/tictactoe/chat.js
+```
 class Chat {
   constructor(chat, msg) {
     this.chat = document.getElementById(chat);
