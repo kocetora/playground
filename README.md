@@ -1,20 +1,11 @@
-
 # Multiplayer gamer
+
 ### You may add your game following the next guide: 
 #### Project consists of three independent parts: 
 ###   1. Websocket server
-
-## 1. The operating principle of the server based on the WebSocket(bi-directional data exchange in real time)
-![WS](https://user-images.githubusercontent.com/43109766/59032548-3e54c100-886f-11e9-824e-38485d9effe5.png)
-
 It's not necessary for you to understand this peace of code to add you game.  
 Path ./main.js
-Routing reference
-### / - root.
-### /create/${token} - API call for creating room.
-### /room/${token} - client interface.
-### /room/${token}/json - API call for retrieving room data(token, history).
-
+Routing scheme /room/token/json
 ```
   route(url) {
     if (url === '/') return fs.promises.readFile('./static/index.html');
@@ -54,6 +45,7 @@ class SocketEventEmitter extends EventEmitter {
       that._emit(message.event, message.data);
     };
   }
+
   load(history) {
     const that = this;
     history.forEach(event => {
@@ -62,6 +54,7 @@ class SocketEventEmitter extends EventEmitter {
     });
   }
 }
+
 const getUserId = () => {
   if (!localStorage.getItem('userId')) {
     localStorage.setItem('userId', Math.floor(Math.random() * 10e12)) + 1;
@@ -76,14 +69,13 @@ Folder ./static/tictactoe
 ##### Path ./static/tictactoe/main.js
 ```
 async function main() {
-  const json = await fetch('./json');
-  const data = await json.json();
+  const result = await fetch('./json');
+  const data = await result.json();
   const socket = new WebSocket(`ws://${config.domain}/${data.token}`);
-  let sizeSet = false;
+  
   socket.onopen = () => {
     const ee = new SocketEventEmitter(socket);
     ee.once('setSize', data => {
-      sizeSet = true;
       const size = parseInt(data.size);
       const board = new TicTacToeBoard('mycanvas', size);
       board.initialize();
@@ -95,12 +87,13 @@ async function main() {
       game.checkMarker();
     });
     ee.load(data.history);
-    if (!sizeSet) {
+    if (ee.listeners('setSize').size) {
       const size = prompt('Choose size');
       ee.emit('setSize', { size });
     }
   };
 }
+
 main();
 ``` 
 ### 4. Chat in the game 
@@ -114,9 +107,13 @@ class Chat {
     const wH = window.innerHeight;
     let width;
     let height;
-    wH < wW ?
-      ((height = wH), (width = (wW - wH) * 0.9999)) :
-      ((height = wH - wW), (width = wW));
+    if( wH < wW ){
+      height = wH; 
+      width = (wW - wH) * 0.9999;
+    } else {
+      height = wH - wW; 
+      width = wW;
+    }
     this.chat.style.height = height.toString() + 'px';
     this.chat.style.width = width.toString() + 'px';
   }
@@ -152,15 +149,15 @@ this.canvas = document.getElementById(id);
 this.ctx = this.canvas.getContext('2d');
 //...
   drawCircle(x, y) {
-    this.ctx.beginPath();
-    this.ctx.arc(
-      (this.width * this.k * 1.5) / (this.size + 2) + (this.width * this.k * x) / (this.size + 2),
-      (this.height * this.k * 1.5) / (this.size + 2) + (this.width * this.k * y) / (this.size + 2),
-      (this.width * this.k * 0.45) / (this.size + 2),
-      0,2 * Math.PI);
-    this.ctx.lineWidth = 3;
-    this.ctx.strokeStyle = '#00BFFF';
-    this.ctx.stroke();
-    this.ctx.closePath();
+    const { wkf, hkf, ctx } = this;
+    const xarc = wkf * 1.5 + wkf * x;
+    const yarc = hkf * 1.5 + wkf * y;
+    const r = wkf * 0.45;
+    ctx.beginPath();
+    ctx.arc( xarc, yarc, r, 0, 2 * Math.PI);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#00BFFF';
+    ctx.stroke();
+    ctx.closePath();
 }
 ```
