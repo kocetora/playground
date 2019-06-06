@@ -9,7 +9,7 @@
 
 It's not necessary for you to understand this peace of code to add you game.  
 Path ./main.js
-Routing reference
+## Routing reference
 ### / - root.
 ### /create/${token} - API call for creating room.
 ### /room/${token} - client interface.
