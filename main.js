@@ -1,11 +1,14 @@
 'use strict';
+
 const Websocket = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+
 class GameMaster {
   constructor() {
     this.rooms = {};
   }
+
   create(name) {
     const token = Math.floor(Math.random() * 10e12) + 1;
     if (!this.rooms[token]) {
@@ -15,6 +18,7 @@ class GameMaster {
       return this.create(name);
     }
   }
+
   json(token) {
     if (this.rooms[token]) {
       const history = this.rooms[token].history;
@@ -23,6 +27,7 @@ class GameMaster {
       return 'Room not found';
     }
   }
+
   route(url) {
     if (url === '/') return fs.promises.readFile('./static/index.html');
     const request = url.split('/');
@@ -42,6 +47,7 @@ class GameMaster {
       return fs.promises.readFile(`./static${url}`);
     }
   }
+
   start(port) {
     const httpError = (res, status, message) => {
       res.statusCode = status;
@@ -78,5 +84,6 @@ class GameMaster {
     });
   }
 }
+
 const game = new GameMaster();
 game.start(8000);

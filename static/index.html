@@ -8,26 +8,23 @@
 input { border: 1px solid green; }
 </style>
 <script>
-  async function main(){
+  function buttonFor(name,request,element,targetID){
+    const target = document.getElementById(targetID);
+    element.addEventListener('click',async () => {
+      const json = await fetch(`./create/${request}/`);
+      const data = await json.json();
+      const link = document.createElement('a')
+      link.href = `./room/${data.token}/`
+      link.innerHTML = `<p>${name}: ${data.token}</p>`;
+      target.appendChild(link)
+    });
+  }
+  async function main() {
   const links = document.getElementById('links');
   const chat = document.getElementById('chat');
+  buttonFor('Chat','chat',chat,'links');
   const tictac = document.getElementById('tictac');
-  chat.addEventListener('click',async () => {
-    const json = await fetch('./create/chat/');
-    const data = await json.json();
-    const link = document.createElement('a')
-    link.href = `./room/${data.token}/`
-    link.innerHTML = `<p>Chat: ${data.token}</p>`;
-    links.appendChild(link);
-  });
-  tictac.addEventListener('click',async () => {
-    const json = await fetch('./create/tictac/');
-    const data = await json.json();
-    const link = document.createElement('a')
-    link.href = `./room/${data.token}/`
-    link.innerHTML = `<p>TicTac: ${data.token}</p>`;
-    links.appendChild(link);
-  });
+  buttonFor('TicTac','tictac',tictac,'links');
 }
 main();
 </script>

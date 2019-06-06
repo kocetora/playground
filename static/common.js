@@ -61,6 +61,7 @@ class EventEmitter {
     return [...this.events.keys()];
   }
 }
+
 class SocketEventEmitter extends EventEmitter {
   constructor(socket) {
     super();
@@ -75,6 +76,7 @@ class SocketEventEmitter extends EventEmitter {
       that._emit(message.event, message.data);
     };
   }
+
   load(history) {
     const that = this;
     history.forEach(event => {
@@ -83,6 +85,7 @@ class SocketEventEmitter extends EventEmitter {
     });
   }
 }
+
 const getUserId = () => {
   if (!localStorage.getItem('userId')) {
     localStorage.setItem('userId', Math.floor(Math.random() * 10e12)) + 1;

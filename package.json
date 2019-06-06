@@ -1,0 +1,25 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "The platform for browser games",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kocetora/playground.git"
+  },
+  "keywords": [
+    "tictactoe"
+  ],
+  "author": "kocetora <kocetora@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kocetora/playground/issues"
+  },
+  "homepage": "https://github.com/kocetora/playground#readme",
+  "dependencies": {
+    "websocket": "^1.0.28"
+  }
+}
