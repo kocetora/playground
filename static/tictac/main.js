@@ -5,12 +5,9 @@ async function main() {
   const data = await result.json();
   const socket = new WebSocket(`ws://${config.domain}/${data.token}`);
 
-  // TODO: need no flag because we can use once or unsubscribe
-  let sizeSet = false;
   socket.onopen = () => {
     const ee = new SocketEventEmitter(socket);
     ee.once('setSize', data => {
-      sizeSet = true;
       const size = parseInt(data.size);
       const board = new TicTacToeBoard('mycanvas', size);
       board.initialize();
@@ -22,7 +19,7 @@ async function main() {
       game.checkMarker();
     });
     ee.load(data.history);
-    if (!sizeSet) {
+    if (ee.listeners('setSize').size) {
       const size = prompt('Choose size');
       ee.emit('setSize', { size });
     }

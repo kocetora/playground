@@ -7,10 +7,13 @@ class Chat {
     const wH = window.innerHeight;
     let width;
     let height;
-    // TODO: use if instead
-    wH < wW ?
-      ((height = wH), (width = (wW - wH) * 0.9999)) :
-      ((height = wH - wW), (width = wW));
+    if( wH < wW ){
+      height = wH; 
+      width = (wW - wH) * 0.9999;
+    } else {
+      height = wH - wW; 
+      width = wW;
+    }
     this.chat.style.height = height.toString() + 'px';
     this.chat.style.width = width.toString() + 'px';
   }
