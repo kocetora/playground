@@ -17,12 +17,14 @@ class Chat {
     this.chat.style.height = height.toString() + 'px';
     this.chat.style.width = width.toString() + 'px';
   }
+  
   write(text, color) {
     const line = document.createElement('div');
     line.innerHTML = `<p>${text}</p>`;
     line.style.color = color;
     this.chat.appendChild(line);
   }
+  
   setEmitter(emitter) {
     const that = this;
     this.msg.addEventListener('keydown', event => {
