@@ -12,7 +12,6 @@ class TicTacToe {
 
   setEmitter(emitter) {
     this.emitter = emitter;
-    // TODO: we need no `that` in this case
 
     emitter.on('move', data => {
       if (this.validate(data)) {
@@ -62,8 +61,8 @@ class TicTacToe {
         history[length - 1].from !== from) 
       && !field[y][x]
   )}
+  
   finishGame(marker) {
-    //чи можна отут забрати that?
     const that = this;
     const finish = document.getElementById('finish');
     finish.style.display = 'block';
@@ -72,6 +71,7 @@ class TicTacToe {
     winner.innerHTML = `You\'ve ${status}`;
     const nextGameBtn = document.getElementById('next-game-btn');
     nextGameBtn.addEventListener('click', async () => {
+      
       if (that.nextURL) {
         window.location.href = that.nextURL;
       } else {
@@ -83,6 +83,7 @@ class TicTacToe {
       }
     });
   }
+  
   over(data) {
     const go = (matrix, coords, target, vector) => {
       const [x, y] = coords;
