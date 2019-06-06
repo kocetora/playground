@@ -29,13 +29,17 @@ class TicTacToeBoard {
           let cord = 'page' + (j % 2 ? 'X' : 'Y'); 
           let l = ( j % 2 ? width : height ) / frame;
             if (e[cord] > l * (i + 1) && e[cord] < l * (i + 3)) {
-              (j % 2 ? x = i : y = i); }}}
+              (j % 2 ? x = i : y = i); 
+            }
+          }
+        }
       if (x >= 0 && y >= 0) { 
         console.log('x: ' + x + '; y: ' + y);
         this.listener(x, y);
       }
     });
   }
+  
   drawField() {
     const { wkf, hkf, size, ctx} = this;
     const axis = [[0, 1], [1, 0]];
@@ -79,6 +83,7 @@ class TicTacToeBoard {
     ctx.stroke();
     ctx.closePath();
   }
+  
   drawCross(x, y) {
     const { wkf, hkf, ctx } = this;
     const axis = [[1, 1], [2, 2], [1, 2], [2, 1]];
