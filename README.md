@@ -13,4 +13,4 @@
 ### / - root.
 ### /create/${token} - API call for creating room.
 ### /room/${token} - client interface.
-### /room/${token}/json - API call for retreiving room data(token, history).
+### /room/${token}/json - API call for retrieving room data(token, history).
